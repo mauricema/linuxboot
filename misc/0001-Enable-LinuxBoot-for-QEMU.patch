@@ -1,0 +1,66 @@
+From 1426415b25a4a416d94781bec7de8a3ef09e2053 Mon Sep 17 00:00:00 2001
+From: Maurice Ma <maurice.ma@intel.com>
+Date: Tue, 25 May 2021 17:36:18 -0700
+Subject: [PATCH] Enable LinuxBoot for QEMU
+
+This patch enables LinuxBoot on QEMU with SBL.
+
+Signed-off-by: Maurice Ma <maurice.ma@intel.com>
+---
+ Platform/QemuBoardPkg/BoardConfig.py              | 8 +++++---
+ Platform/QemuBoardPkg/CfgData/CfgDataExt_Brd1.dlt | 2 +-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/Platform/QemuBoardPkg/BoardConfig.py b/Platform/QemuBoardPkg/BoardConfig.py
+index e50061d2..d2381ce2 100644
+--- a/Platform/QemuBoardPkg/BoardConfig.py
++++ b/Platform/QemuBoardPkg/BoardConfig.py
+@@ -98,6 +98,8 @@ class Board(BaseBoard):
+         # Let Stage1A verifies Stage1B
+         self.VERIFIED_BOOT_STAGE_1B  = 0x1
+ 
++        self.LOADER_RSVD_MEM_SIZE  = 0x00F8C000
++
+         self.STAGE1B_XIP          = 0
+ 
+         self.STAGE1A_SIZE         = 0x00010000
+@@ -106,7 +108,7 @@ class Board(BaseBoard):
+ 
+         self.TEST_SIZE            = 0x00001000
+         self.SIIPFW_SIZE          = 0x00010000
+-        self.EPAYLOAD_SIZE        = 0x0020D000
++        self.EPAYLOAD_SIZE        = 0x0070D000
+         self.PAYLOAD_SIZE         = 0x00020000
+         self.CFGDATA_SIZE         = 0x00001000
+         self.KEYHASH_SIZE         = 0x00001000
+@@ -120,12 +122,12 @@ class Board(BaseBoard):
+             self.TOP_SWAP_SIZE      = 0x000000
+             self.REDUNDANT_SIZE     = 0x000000
+             self.NON_VOLATILE_SIZE  = 0x000000
+-            self.NON_REDUNDANT_SIZE = 0x400000
++            self.NON_REDUNDANT_SIZE = 0x1000000
+         else:
+             self.TOP_SWAP_SIZE      = 0x010000
+             self.REDUNDANT_SIZE     = 0x080000
+             self.NON_VOLATILE_SIZE  = 0x001000
+-            self.NON_REDUNDANT_SIZE = 0x2DF000
++            self.NON_REDUNDANT_SIZE = 0xEDF000
+ 
+ 
+         self.SLIMBOOTLOADER_SIZE = (self.TOP_SWAP_SIZE + self.REDUNDANT_SIZE) * 2 + \
+diff --git a/Platform/QemuBoardPkg/CfgData/CfgDataExt_Brd1.dlt b/Platform/QemuBoardPkg/CfgData/CfgDataExt_Brd1.dlt
+index 39c4dcaf..b414a0ad 100644
+--- a/Platform/QemuBoardPkg/CfgData/CfgDataExt_Brd1.dlt
++++ b/Platform/QemuBoardPkg/CfgData/CfgDataExt_Brd1.dlt
+@@ -15,7 +15,7 @@ PLATFORMID_CFG_DATA.PlatformId | 1
+ 
+ PLAT_NAME_CFG_DATA.PlatformName            | 'QEMU_01'
+ 
+-GEN_CFG_DATA.PayloadId                     | 'AUTO'
++GEN_CFG_DATA.PayloadId                     | 'LINX'
+ GEN_CFG_DATA.CurrentBoot                   | 16
+ 
+ !include CfgDataExt_Inc.dlt
+-- 
+2.17.1
+
